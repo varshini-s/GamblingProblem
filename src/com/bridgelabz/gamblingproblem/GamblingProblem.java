@@ -12,8 +12,9 @@ public class GamblingProblem
 	public static int totalStakeRemaining = 0;
 	public static boolean resign=false;
 	public static boolean betResult=false;
+	public static int daysWon=0,daysLost=0,totalWon=0,totalLost=0;
 
-	
+	//To make bet and get result
 	public static boolean makeBet()
 	{
 		boolean betWin=false;
@@ -31,6 +32,7 @@ public class GamblingProblem
 		}
 		return betWin;
 	}
+	//To resign from game
 	public static boolean resignStake()
 	
 	{ boolean resign=false;
@@ -46,9 +48,23 @@ public class GamblingProblem
 		return resign;
 		
 	}
-
-
-	public static void  PlayForGivenDays(int numberOfDays )
+	//to track days won and lost
+	public static void trackWonLostDay()
+	{
+		if(PerDayStake>STAKE)
+		{
+			daysWon++;
+			totalWon+=(PerDayStake-STAKE);
+		}
+		else
+		{
+			daysLost++;
+			totalLost+=(STAKE-PerDayStake);
+		}
+		
+	}
+	//to play for given number of days
+	public static void  playForGivenDays(int numberOfDays )
 	
 	{
 		for(int index=0;index<numberOfDays;index++)
@@ -68,7 +84,7 @@ public class GamblingProblem
 				}
 			}
 			
-
+			trackWonLostDay();
 		}
 		
 		int totalStakeGiven = STAKE*numberOfDays;
@@ -84,7 +100,6 @@ public class GamblingProblem
 			
 		}
 		
-		
 	}
 	
 	public static void main(String[] args) 
@@ -94,9 +109,12 @@ public class GamblingProblem
 		
 		int numberOfDays=20;
 	
-		PlayForGivenDays(numberOfDays);
+		playForGivenDays(numberOfDays);
 		
+		System.out.println("Total number of days won :"+daysWon+" and the stake won is "+totalWon);
+		System.out.println("Total number of days lost :"+daysLost+" and the stake won is "+totalLost);
 
+		
 	
 	}
 
