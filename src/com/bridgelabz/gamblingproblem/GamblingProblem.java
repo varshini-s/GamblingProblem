@@ -2,27 +2,31 @@ package com.bridgelabz.gamblingproblem;
 
 public class GamblingProblem 
 {
+	//Global Constants
 	public static final int STAKE=100;
 	public static final int BET_EVERY_GAME=1;
-	
-	public static int stake=STAKE;
+
+	//Global Variables
+	public static int PerDayStake=STAKE;
 	public static int amountWon=0,amountLost=0;
-	public static int totalStake = 0;
+	public static int totalStakeRemaining = 0;
+	public static boolean resign=false;
+	public static boolean betResult=false;
+
 	
 	public static boolean makeBet()
 	{
 		boolean betWin=false;
 		int output=(int)Math.floor(Math.random()*10)%2;
 		
-		
 		if(output==1)
 		{
-			stake++;
+			PerDayStake++;
 			System.out.println("Gambler won");
 		}
 		else if(output==0)
 		{
-			stake--;
+			PerDayStake--;
 			System.out.println("Gambler lost ");
 		}
 		return betWin;
@@ -31,9 +35,9 @@ public class GamblingProblem
 	
 	{ boolean resign=false;
 		
-		int stakePerecentage=(stake*100)/STAKE;
+		int stakePerecentage=(PerDayStake*100)/STAKE;
 		
-		System.out.println(stake);
+		System.out.println(PerDayStake);
 		if(stakePerecentage>=150 || stakePerecentage<50)
 		{
 			
@@ -43,44 +47,56 @@ public class GamblingProblem
 		
 	}
 
-	public static void  countStake()
-	{
-		
-		totalStake=totalStake+stake;
-		
-		
-	}
+
+	public static void  PlayForGivenDays(int numberOfDays )
 	
-	public static void main(String[] args) 
 	{
-		boolean resign=false;
-		boolean betResult=false;
-		System.out.println("Welcoem to gambling problem");
-		
-		int numberOfDays=20;
-		int countDays=0;
-		int amount=0;
-		
-		while(countDays<numberOfDays)
+		for(int index=0;index<numberOfDays;index++)
 		{
-			stake=STAKE;
-			
+			PerDayStake=STAKE;
+
 			while(resign==false)
 			{
 				betResult=makeBet();
 				if(resignStake()==true)
 				{
 					System.out.println("Player resigned the game");
-					countStake();
+
+					totalStakeRemaining=totalStakeRemaining+PerDayStake;
+
 					break;
 				}
 			}
 			
-			countDays++;
+
+		}
+		
+		int totalStakeGiven = STAKE*numberOfDays;
+		
+		if(totalStakeGiven>totalStakeRemaining)
+		{
+			System.out.println("Total stake lost by player: "+(totalStakeGiven-totalStakeRemaining));
+		}
+		else
+		{
+			System.out.println("Total stake Won by player: "+(totalStakeRemaining-totalStakeGiven));
+
 			
 		}
 		
-		System.out.println("After "+countDays+" days stake is "+totalStake);
+		
+	}
+	
+	public static void main(String[] args) 
+	{
+		
+		System.out.println("Welcome to gambling problem");
+		
+		int numberOfDays=20;
+	
+		PlayForGivenDays(numberOfDays);
+		
+
 	
 	}
 
