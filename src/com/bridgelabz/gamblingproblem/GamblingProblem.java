@@ -12,11 +12,13 @@ public class GamblingProblem
 		
 		if(output==1)
 		{
-			betWin=true;
+			stake++;
+			System.out.println("Gambler won");
 		}
 		else if(output==0)
 		{
-			betWin=false;
+			stake--;
+			System.out.println("Gambler ");
 		}
 		return betWin;
 	}
@@ -25,16 +27,16 @@ public class GamblingProblem
 	{
 		boolean betResult=false;
 		System.out.println("Welcoem to gambling problem");
-		int stake=100,betEveryGame=1;
+		
 		
 		betResult=makeBet();
 		if(betResult==true)
 		{
-			System.out.println("Gambler won 1 dollar");
+			
 		}
 		else
 		{
-			System.out.println("Gambler lost 1 dollar");
+			
 
 		}
 		
