@@ -25,6 +25,7 @@ public class GamblingProblem
 	{
 		boolean betResult=false;
 		System.out.println("Welcoem to gambling problem");
+		int stake=100,betEveryGame=1;
 		
 		betResult=makeBet();
 		if(betResult==true)
