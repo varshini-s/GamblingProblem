@@ -10,8 +10,7 @@ public class GamblingProblem
 	public static int PerDayStake=STAKE;
 	public static int amountWon=0,amountLost=0;
 	public static int totalStakeRemaining = 0;
-	public static boolean resign=false;
-	public static boolean betResult=false;
+	public static boolean resign=false, betResult=false,won=false;
 	public static int daysWon=0,daysLost=0,totalWon=0,totalLost=0;
 	public static int luckiestDay=0,unLuckiestDay=0,maxLost=0,maxWon=0;
 
@@ -93,10 +92,12 @@ public class GamblingProblem
 		
 		if(totalStakeGiven>totalStakeRemaining)
 		{
+			won=false;
 			System.out.println("Total stake lost by player: "+(totalStakeGiven-totalStakeRemaining));
 		}
 		else
-		{
+		{	
+			won=true;
 			System.out.println("Total stake Won by player: "+(totalStakeRemaining-totalStakeGiven));
 
 			
@@ -121,6 +122,20 @@ public class GamblingProblem
 		
 		
 	}
+	//to decide on continuing or quitting game
+	public static void decideToPlay()
+	{
+		if(won==true)
+		{
+			System.out.println("Player decides to continue playing the game next month");
+		}
+		else
+		{
+			System.out.println("Player decides to stop playing the game next month");
+
+		}
+		
+	}
 	
 	public static void main(String[] args) 
 	{
@@ -130,6 +145,7 @@ public class GamblingProblem
 		int numberOfDays=20;
 	
 		playForGivenDays(numberOfDays);
+		decideToPlay();
 		
 		System.out.println("Total number of days won :"+daysWon+" and the stake won is "+totalWon);
 		System.out.println("Total number of days lost :"+daysLost+" and the stake won is "+totalLost);
