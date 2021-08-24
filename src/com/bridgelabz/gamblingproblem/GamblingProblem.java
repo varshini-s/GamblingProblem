@@ -13,6 +13,7 @@ public class GamblingProblem
 	public static boolean resign=false;
 	public static boolean betResult=false;
 	public static int daysWon=0,daysLost=0,totalWon=0,totalLost=0;
+	public static int luckiestDay=0,unLuckiestDay=0,maxLost=0,maxWon=0;
 
 	//To make bet and get result
 	public static boolean makeBet()
@@ -40,7 +41,7 @@ public class GamblingProblem
 		int stakePerecentage=(PerDayStake*100)/STAKE;
 		
 		System.out.println(PerDayStake);
-		if(stakePerecentage>=150 || stakePerecentage<50)
+		if(stakePerecentage>=150 || stakePerecentage<=50)
 		{
 			
 			resign=true;
@@ -49,7 +50,7 @@ public class GamblingProblem
 		
 	}
 	//to track days won and lost
-	public static void trackWonLostDay()
+	public static void trackTotalWonLostDay()
 	{
 		if(PerDayStake>STAKE)
 		{
@@ -83,8 +84,9 @@ public class GamblingProblem
 					break;
 				}
 			}
-			
-			trackWonLostDay();
+			//To keep track of total stakes won lost at the end of day
+			trackTotalWonLostDay();
+			trackMaxWonLostDay(index+1);
 		}
 		
 		int totalStakeGiven = STAKE*numberOfDays;
@@ -101,6 +103,24 @@ public class GamblingProblem
 		}
 		
 	}
+	//to track the day lost the maximum and won maximum
+	public static void trackMaxWonLostDay(int currentDay)
+	{
+		
+		if((PerDayStake>STAKE)&& (PerDayStake-STAKE)>maxWon)
+		{
+			luckiestDay=currentDay;
+			maxWon=PerDayStake-STAKE;
+		}
+		else if((PerDayStake<STAKE)&& (STAKE-PerDayStake)>maxLost)
+		{
+			unLuckiestDay=currentDay;
+			maxLost=STAKE-PerDayStake;
+		}
+		
+		
+		
+	}
 	
 	public static void main(String[] args) 
 	{
@@ -113,6 +133,10 @@ public class GamblingProblem
 		
 		System.out.println("Total number of days won :"+daysWon+" and the stake won is "+totalWon);
 		System.out.println("Total number of days lost :"+daysLost+" and the stake won is "+totalLost);
+		
+		System.out.println("The luckiest day was :"+luckiestDay+" and maximum won on that day is :"+maxWon);
+		System.out.println("The Unluckiest day was :"+unLuckiestDay+" and maximum Lost on that day is :"+maxLost);
+
 
 		
 	
