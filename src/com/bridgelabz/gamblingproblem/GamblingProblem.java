@@ -12,7 +12,7 @@ public class GamblingProblem
 	public static int totalStakeRemaining = 0;
 	public static boolean resign=false, betResult=false,won=false;
 	public static int daysWon=0,daysLost=0,totalWon=0,totalLost=0;
-	public static int luckiestDay=0,unLuckiestDay=0,maxLost=0,maxWon=0;
+	public static int luckiestMonth=0,unLuckiestMonth=0,maxLost=0,maxWon=0;
 
 	//To make bet and get result
 	public static boolean makeBet()
@@ -23,12 +23,11 @@ public class GamblingProblem
 		if(output==1)
 		{
 			PerDayStake++;
-			//System.out.println("Gambler won");
+			
 		}
 		else if(output==0)
 		{
 			PerDayStake--;
-			//System.out.println("Gambler lost ");
 		}
 		return betWin;
 	}
@@ -40,7 +39,7 @@ public class GamblingProblem
 		int stakePerecentage=(PerDayStake*100)/STAKE;
 		
 
-		//System.out.println(PerDayStake);
+
 		if(stakePerecentage>=150 || stakePerecentage<50)
 		{
 			
@@ -58,6 +57,7 @@ public class GamblingProblem
 		for(int index=0;index<numberOfMonths;index++)
 		{
 			playForGivenDays(numberOfDays);
+			trackMaxWonLostDay(index);
 		
 			
 			System.out.println("Number of days won in the month "+index+"  is"+daysWon);
@@ -92,7 +92,6 @@ public class GamblingProblem
 				}
 			}
 
-			
 			//to track the days lost and won
 			if(PerDayStake>STAKE)
 			{
@@ -123,18 +122,18 @@ public class GamblingProblem
 		
 	}
 	//to track the day lost the maximum and won maximum
-	public static void trackMaxWonLostDay(int currentDay)
+	public static void trackMaxWonLostDay(int currentMonth)
 	{
 		
-		if((PerDayStake>STAKE)&& (PerDayStake-STAKE)>maxWon)
+		if(daysWon>maxWon)
 		{
-			luckiestDay=currentDay;
-			maxWon=PerDayStake-STAKE;
+			luckiestMonth=currentMonth;
+			maxWon=daysWon;
 		}
-		else if((PerDayStake<STAKE)&& (STAKE-PerDayStake)>maxLost)
+		else if(daysLost>maxLost)
 		{
-			unLuckiestDay=currentDay;
-			maxLost=STAKE-PerDayStake;
+			unLuckiestMonth=currentMonth;
+			maxLost=daysLost;
 		}
 		
 		
@@ -167,8 +166,8 @@ public class GamblingProblem
 		System.out.println("Total number of days won :"+daysWon+" and the stake won is "+totalWon);
 		System.out.println("Total number of days lost :"+daysLost+" and the stake won is "+totalLost);
 		
-		System.out.println("The luckiest day was :"+luckiestDay+" and maximum won on that day is :"+maxWon);
-		System.out.println("The Unluckiest day was :"+unLuckiestDay+" and maximum Lost on that day is :"+maxLost);
+		System.out.println("The luckiest month was :"+luckiestMonth);
+		System.out.println("The Unluckiest month was :"+unLuckiestMonth);
 
 
 		
