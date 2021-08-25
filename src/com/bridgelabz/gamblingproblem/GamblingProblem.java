@@ -23,12 +23,12 @@ public class GamblingProblem
 		if(output==1)
 		{
 			PerDayStake++;
-			System.out.println("Gambler won");
+			//System.out.println("Gambler won");
 		}
 		else if(output==0)
 		{
 			PerDayStake--;
-			System.out.println("Gambler lost ");
+			//System.out.println("Gambler lost ");
 		}
 		return betWin;
 	}
@@ -39,7 +39,7 @@ public class GamblingProblem
 		
 		int stakePerecentage=(PerDayStake*100)/STAKE;
 		
-		System.out.println(PerDayStake);
+		//System.out.println(PerDayStake);
 		if(stakePerecentage>=150 || stakePerecentage<50)
 		{
 			
@@ -49,24 +49,30 @@ public class GamblingProblem
 		
 	}
 	//to track days won and lost
-	public static void trackWonLostDay()
+	public static void DaysWonLostInMonth(int numberOfMonths)
 	{
-		if(PerDayStake>STAKE)
+		int numberOfDays=30;
+		
+		for(int index=0;index<numberOfMonths;index++)
 		{
-			daysWon++;
-			totalWon+=(PerDayStake-STAKE);
+			playForGivenDays(numberOfDays);
+		
+			
+			System.out.println("Number of days won in the month "+index+"  is"+daysWon);
+
+			System.out.println("Number of days lost in the month "+index+"  is"+daysLost);
+
 		}
-		else
-		{
-			daysLost++;
-			totalLost+=(STAKE-PerDayStake);
-		}
+		
+		
 		
 	}
 	//to play for given number of days
 	public static void  playForGivenDays(int numberOfDays )
 	
 	{
+		daysLost=0;
+		daysWon=0;
 		for(int index=0;index<numberOfDays;index++)
 		{
 			PerDayStake=STAKE;
@@ -76,7 +82,7 @@ public class GamblingProblem
 				betResult=makeBet();
 				if(resignStake()==true)
 				{
-					System.out.println("Player resigned the game");
+					//System.out.println("Player resigned the game");
 
 					totalStakeRemaining=totalStakeRemaining+PerDayStake;
 
@@ -84,7 +90,17 @@ public class GamblingProblem
 				}
 			}
 			
-			trackWonLostDay();
+			//to track the days lost and won
+			if(PerDayStake>STAKE)
+			{
+				daysWon++;
+				totalWon+=(PerDayStake-STAKE);
+			}
+			else
+			{
+				daysLost++;
+				totalLost+=(STAKE-PerDayStake);
+			}
 		}
 		
 		int totalStakeGiven = STAKE*numberOfDays;
@@ -107,9 +123,9 @@ public class GamblingProblem
 		
 		System.out.println("Welcome to gambling problem");
 		
-		int numberOfDays=20;
-	
-		playForGivenDays(numberOfDays);
+		
+		int numberOfMonths=5;
+		DaysWonLostInMonth(numberOfMonths);
 		
 		System.out.println("Total number of days won :"+daysWon+" and the stake won is "+totalWon);
 		System.out.println("Total number of days lost :"+daysLost+" and the stake won is "+totalLost);
