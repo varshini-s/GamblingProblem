@@ -10,9 +10,10 @@ public class GamblingProblem
 	public static int PerDayStake=STAKE;
 	public static int amountWon=0,amountLost=0;
 	public static int totalStakeRemaining = 0;
-	public static boolean resign=false, betResult=false,won=false;
+	public static boolean resign=false;
+	public static boolean betResult=false,won=false,stopPlaying=false;
 	public static int daysWon=0,daysLost=0,totalWon=0,totalLost=0;
-	public static int luckiestDay=0,unLuckiestDay=0,maxLost=0,maxWon=0;
+	public static int luckiestMonth=0,unLuckiestMonth=0,maxLost=0,maxWon=0;
 
 	//To make bet and get result
 	public static boolean makeBet()
@@ -23,12 +24,11 @@ public class GamblingProblem
 		if(output==1)
 		{
 			PerDayStake++;
-			System.out.println("Gambler won");
+			
 		}
 		else if(output==0)
 		{
 			PerDayStake--;
-			System.out.println("Gambler lost ");
 		}
 		return betWin;
 	}
@@ -39,8 +39,8 @@ public class GamblingProblem
 		
 		int stakePerecentage=(PerDayStake*100)/STAKE;
 		
-		System.out.println(PerDayStake);
-		if(stakePerecentage>=150 || stakePerecentage<=50)
+
+		if(stakePerecentage>=150 || stakePerecentage<50)
 		{
 			
 			resign=true;
@@ -49,24 +49,38 @@ public class GamblingProblem
 		
 	}
 	//to track days won and lost
-	public static void trackTotalWonLostDay()
+
+	public static void playForGivenMonths(int numberOfMonths)
 	{
-		if(PerDayStake>STAKE)
+		int numberOfDays=30;
+		
+		for(int index=0;index<numberOfMonths;index++)
 		{
-			daysWon++;
-			totalWon+=(PerDayStake-STAKE);
+			playForGivenDays(numberOfDays);
+			trackMaxWonLostDay(index);
+		
+			
+			System.out.println("Number of days won in the month "+index+"  is"+daysWon);
+
+			System.out.println("Number of days lost in the month "+index+"  is"+daysLost);
+			
+			decideToPlay();
+			if(stopPlaying)
+			{
+				break;
+			}
+
 		}
-		else
-		{
-			daysLost++;
-			totalLost+=(STAKE-PerDayStake);
-		}
+		
+		
 		
 	}
 	//to play for given number of days
 	public static void  playForGivenDays(int numberOfDays )
 	
-	{
+	{	
+		daysLost=0;
+		daysWon=0;
 		for(int index=0;index<numberOfDays;index++)
 		{
 			PerDayStake=STAKE;
@@ -76,16 +90,25 @@ public class GamblingProblem
 				betResult=makeBet();
 				if(resignStake()==true)
 				{
-					System.out.println("Player resigned the game");
+					//System.out.println("Player resigned the game");
 
 					totalStakeRemaining=totalStakeRemaining+PerDayStake;
 
 					break;
 				}
 			}
-			//To keep track of total stakes won lost at the end of day
-			trackTotalWonLostDay();
-			trackMaxWonLostDay(index+1);
+	
+			//to track the days lost and won
+			if(PerDayStake>STAKE)
+			{
+				daysWon++;
+				totalWon+=(PerDayStake-STAKE);
+			}
+			else
+			{
+				daysLost++;
+				totalLost+=(STAKE-PerDayStake);
+			}
 		}
 		
 		int totalStakeGiven = STAKE*numberOfDays;
@@ -96,33 +119,32 @@ public class GamblingProblem
 			System.out.println("Total stake lost by player: "+(totalStakeGiven-totalStakeRemaining));
 		}
 		else
-		{	
+		{
 			won=true;
 			System.out.println("Total stake Won by player: "+(totalStakeRemaining-totalStakeGiven));
 
 			
 		}
-		
+		totalStakeRemaining=0;
 	}
 	//to track the day lost the maximum and won maximum
-	public static void trackMaxWonLostDay(int currentDay)
+	public static void trackMaxWonLostDay(int currentMonth)
 	{
 		
-		if((PerDayStake>STAKE)&& (PerDayStake-STAKE)>maxWon)
+		if(daysWon>maxWon)
 		{
-			luckiestDay=currentDay;
-			maxWon=PerDayStake-STAKE;
+			luckiestMonth=currentMonth;
+			maxWon=daysWon;
 		}
-		else if((PerDayStake<STAKE)&& (STAKE-PerDayStake)>maxLost)
+		else if(daysLost>maxLost)
 		{
-			unLuckiestDay=currentDay;
-			maxLost=STAKE-PerDayStake;
+			unLuckiestMonth=currentMonth;
+			maxLost=daysLost;
 		}
 		
 		
 		
 	}
-	//to decide on continuing or quitting game
 	public static void decideToPlay()
 	{
 		if(won==true)
@@ -131,27 +153,28 @@ public class GamblingProblem
 		}
 		else
 		{
+			stopPlaying=true;
 			System.out.println("Player decides to stop playing the game next month");
 
 		}
 		
 	}
 	
+	
 	public static void main(String[] args) 
 	{
 		
 		System.out.println("Welcome to gambling problem");
 		
-		int numberOfDays=20;
-	
-		playForGivenDays(numberOfDays);
-		decideToPlay();
+		
+		int numberOfMonths=5;
+		playForGivenMonths(numberOfMonths);
 		
 		System.out.println("Total number of days won :"+daysWon+" and the stake won is "+totalWon);
 		System.out.println("Total number of days lost :"+daysLost+" and the stake won is "+totalLost);
 		
-		System.out.println("The luckiest day was :"+luckiestDay+" and maximum won on that day is :"+maxWon);
-		System.out.println("The Unluckiest day was :"+unLuckiestDay+" and maximum Lost on that day is :"+maxLost);
+		System.out.println("The luckiest month was :"+luckiestMonth);
+		System.out.println("The Unluckiest month was :"+unLuckiestMonth);
 
 
 		
